@@ -296,7 +296,7 @@ public class ImagePickerDelegate
 
   private void launchPickMediaFromGalleryIntent(Messages.GeneralOptions generalOptions) {
     Intent pickMediaIntent;
-    if (ImagePickerUtils.effectiveUsePhotoPicker(generalOptions.getUsePhotoPicker())) {
+    if (ImagePickerUtils.effectiveUsePhotoPicker(usePhotoPicker)) {
       if (generalOptions.getAllowMultiple()) {
         int limit = ImagePickerUtils.getLimitFromOption(generalOptions);
 
@@ -342,7 +342,7 @@ public class ImagePickerDelegate
 
   private void launchPickVideoFromGalleryIntent(Boolean usePhotoPicker) {
     Intent pickVideoIntent;
-    if (ImagePickerUtils.effectiveUsePhotoPicker(generalOptions.getUsePhotoPicker())) {
+    if (ImagePickerUtils.effectiveUsePhotoPicker(usePhotoPicker)) {
       pickVideoIntent =
           new ActivityResultContracts.PickVisualMedia()
               .createIntent(
@@ -441,7 +441,7 @@ public class ImagePickerDelegate
 
   private void launchPickImageFromGalleryIntent(Boolean usePhotoPicker) {
     Intent pickImageIntent;
-    if (ImagePickerUtils.effectiveUsePhotoPicker(generalOptions.getUsePhotoPicker())) {
+    if (ImagePickerUtils.effectiveUsePhotoPicker(usePhotoPicker)) {
       pickImageIntent =
           new ActivityResultContracts.PickVisualMedia()
               .createIntent(
@@ -458,7 +458,7 @@ public class ImagePickerDelegate
 
   private void launchMultiPickImageFromGalleryIntent(Boolean usePhotoPicker, int limit) {
     Intent pickMultiImageIntent;
-    if (ImagePickerUtils.effectiveUsePhotoPicker(generalOptions.getUsePhotoPicker())) {
+    if (ImagePickerUtils.effectiveUsePhotoPicker(usePhotoPicker)) {
       pickMultiImageIntent =
           new ActivityResultContracts.PickMultipleVisualMedia(limit)
               .createIntent(
@@ -490,7 +490,7 @@ public class ImagePickerDelegate
 
   private void launchMultiPickVideoFromGalleryIntent(Boolean usePhotoPicker, int limit) {
     Intent pickMultiVideoIntent;
-    if (ImagePickerUtils.effectiveUsePhotoPicker(generalOptions.getUsePhotoPicker())) {
+    if (ImagePickerUtils.effectiveUsePhotoPicker(usePhotoPicker)) {
       pickMultiVideoIntent =
           new ActivityResultContracts.PickMultipleVisualMedia(limit)
               .createIntent(
