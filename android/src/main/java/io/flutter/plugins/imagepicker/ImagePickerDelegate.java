@@ -30,6 +30,7 @@ import io.flutter.plugins.imagepicker.Messages.VideoSelectionOptions;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -580,6 +581,7 @@ public class ImagePickerDelegate
     return image;
   }
 
+  @SuppressWarnings("QueryPermissionsNeeded")
   private void grantUriPermissions(Intent intent, Uri imageUri) {
     PackageManager packageManager = activity.getPackageManager();
     List<ResolveInfo> compatibleActivities;
@@ -599,10 +601,20 @@ public class ImagePickerDelegate
     }
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings({"deprecation", "QueryPermissionsNeeded"})
   private static List<ResolveInfo> queryIntentActivitiesPreApi33(
-      PackageManager packageManager, Intent intent) {
-    return packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+          PackageManager packageManager, Intent intent) {
+    try {
+      return packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+    } catch (Exception e) {
+      Log.e(
+              "ImagePickerDelegate",
+              "Fallback query for intent activities failed. Ensure the intent is properly "
+                      + "formatted and check if Android 11+ package visibility restrictions "
+                      + "require a specific <queries> declaration in your app's AndroidManifest.xml.",
+              e);
+      return Collections.emptyList();
+    }
   }
 
   @Override
@@ -988,14 +1000,9 @@ public class ImagePickerDelegate
   }
 
   private void useFrontCamera(Intent intent) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-      intent.putExtra(
-          "android.intent.extras.CAMERA_FACING", CameraCharacteristics.LENS_FACING_FRONT);
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        intent.putExtra("android.intent.extra.USE_FRONT_CAMERA", true);
-      }
-    } else {
-      intent.putExtra("android.intent.extras.CAMERA_FACING", 1);
+    intent.putExtra("android.intent.extras.CAMERA_FACING", CameraCharacteristics.LENS_FACING_FRONT);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      intent.putExtra("android.intent.extra.USE_FRONT_CAMERA", true);
     }
   }
 }
