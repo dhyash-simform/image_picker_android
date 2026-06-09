@@ -16,6 +16,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.util.Log;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -297,7 +298,7 @@ public class ImagePickerDelegate
 
   private void launchPickMediaFromGalleryIntent(Messages.GeneralOptions generalOptions) {
     Intent pickMediaIntent;
-    if (ImagePickerUtils.effectiveUsePhotoPicker(usePhotoPicker)) {
+    if (ImagePickerUtils.effectiveUsePhotoPicker(generalOptions.getUsePhotoPicker())) {
       if (generalOptions.getAllowMultiple()) {
         int limit = ImagePickerUtils.getLimitFromOption(generalOptions);
 
